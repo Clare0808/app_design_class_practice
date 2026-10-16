@@ -1,0 +1,444 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f5">
+  <title>日常計畫 Daily Planner</title>
+  <style>
+    :root {
+      --ink: #252823;
+      --muted: #81857d;
+      --line: #ebece7;
+      --green: #47765b;
+      --green-soft: #edf4ee;
+      --orange: #bd7840;
+      --orange-soft: #fbf1e8;
+      --blue: #637ea8;
+      --blue-soft: #edf1f8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      background: #f7f7f5;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .app {
+      width: min(1080px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 42px 0 64px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 27px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--green);
+      color: white;
+      font-size: 19px;
+    }
+
+    .top-date { color: var(--muted); font-size: 13px; }
+    .hero { padding: 43px 0 31px; }
+
+    .eyebrow {
+      margin: 0 0 11px;
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .13em;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 42px);
+      font-weight: 650;
+      letter-spacing: -.045em;
+    }
+
+    .hero-note { margin: 12px 0 0; color: var(--muted); font-size: 14px; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .column { display: grid; gap: 20px; }
+
+    .panel {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: white;
+      box-shadow: 0 3px 12px rgba(33, 39, 31, .025);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 21px 22px 17px;
+    }
+
+    .panel-title { margin: 0; font-size: 16px; font-weight: 700; }
+    .panel-caption { color: var(--muted); font-size: 12px; }
+
+    .count {
+      display: inline-grid;
+      min-width: 24px;
+      height: 24px;
+      margin-left: 6px;
+      padding: 0 6px;
+      place-items: center;
+      border-radius: 99px;
+      background: #f1f2ee;
+      color: #666b62;
+      font-size: 11px;
+    }
+
+    .schedule-list, .task-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 22px 8px;
+    }
+
+    .schedule-item {
+      display: grid;
+      grid-template-columns: 62px 1fr auto;
+      gap: 13px;
+      align-items: center;
+      min-height: 76px;
+      border-top: 1px solid #f0f0ed;
+    }
+
+    .schedule-time {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .schedule-name { margin: 0; font-size: 14px; font-weight: 650; }
+    .schedule-detail { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+
+    .schedule-tag {
+      padding: 5px 8px;
+      border-radius: 7px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .task-list { padding-bottom: 11px; }
+
+    .task-item {
+      display: grid;
+      grid-template-columns: 20px 1fr auto;
+      gap: 11px;
+      align-items: center;
+      min-height: 62px;
+      border-top: 1px solid #f0f0ed;
+    }
+
+    .task-check { width: 17px; height: 17px; margin: 0; accent-color: var(--green); cursor: pointer; }
+    .task-name { margin: 0; font-size: 13px; font-weight: 600; }
+    .task-item.is-done .task-name { color: #a4a69f; text-decoration: line-through; }
+
+    .task-status {
+      padding: 5px 8px;
+      border-radius: 7px;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+
+    .status-todo { background: var(--orange-soft); color: var(--orange); }
+    .status-progress { background: var(--blue-soft); color: var(--blue); }
+    .status-done { background: var(--green-soft); color: var(--green); }
+    .form-panel .panel-head { padding-bottom: 8px; }
+    .form-body { display: grid; gap: 15px; padding: 8px 22px 22px; }
+    .field { display: grid; gap: 7px; }
+    .field label { color: #555a51; font-size: 12px; font-weight: 650; }
+
+    .field input, .field textarea {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid #e6e8e2;
+      border-radius: 9px;
+      outline: none;
+      background: white;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .field textarea { min-height: 70px; resize: vertical; }
+
+    .field input:focus, .field textarea:focus {
+      border-color: #8eab94;
+      box-shadow: 0 0 0 3px rgba(71, 118, 91, .1);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .submit-button {
+      display: flex;
+      min-height: 43px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 9px;
+      background: var(--green);
+      color: white;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .submit-button:hover { background: #3c664d; }
+
+    .submit-button:focus-visible, .task-check:focus-visible {
+      outline: 3px solid rgba(71, 118, 91, .3);
+      outline-offset: 2px;
+    }
+
+    .footer { padding-top: 24px; color: #a1a49c; font-size: 11px; text-align: center; }
+
+    @media (max-width: 720px) {
+      .app { width: min(calc(100% - 32px), 540px); padding-top: 25px; }
+      .hero { padding-top: 34px; }
+      .dashboard { grid-template-columns: 1fr; gap: 16px; }
+      .column { gap: 16px; }
+    }
+
+    @media (max-width: 420px) {
+      .app { width: calc(100% - 24px); }
+      .top-date { font-size: 11px; }
+      .panel-head { padding-right: 17px; padding-left: 17px; }
+      .schedule-list, .task-list { padding-right: 17px; padding-left: 17px; }
+      .form-body { padding-right: 17px; padding-left: 17px; }
+      .schedule-item { grid-template-columns: 53px 1fr auto; gap: 9px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">✳</span>
+        <span>日常計畫</span>
+      </div>
+      <time class="top-date" id="top-date"></time>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow">MY DAILY PLANNER</p>
+      <h1 id="page-title">今天，也好好安排。</h1>
+      <p class="hero-note">整理你的行程與待辦，讓每一步都更從容。</p>
+    </section>
+
+    <div class="dashboard">
+      <div class="column">
+        <section class="panel" aria-labelledby="schedule-heading">
+          <div class="panel-head">
+            <h2 class="panel-title" id="schedule-heading">今日行程 <span class="count" id="schedule-count">3</span></h2>
+            <span class="panel-caption">按時間安排</span>
+          </div>
+          <ul class="schedule-list" id="schedule-list">
+            <li class="schedule-item" data-time="09:00">
+              <time class="schedule-time">09:00</time>
+              <div>
+                <p class="schedule-name">晨間例會</p>
+                <p class="schedule-detail">確認本週進度與工作安排</p>
+              </div>
+              <span class="schedule-tag">工作</span>
+            </li>
+            <li class="schedule-item" data-time="12:30">
+              <time class="schedule-time">12:30</time>
+              <div>
+                <p class="schedule-name">和小安吃午餐</p>
+                <p class="schedule-detail">巷口日式食堂</p>
+              </div>
+              <span class="schedule-tag">生活</span>
+            </li>
+            <li class="schedule-item" data-time="15:00">
+              <time class="schedule-time">15:00</time>
+              <div>
+                <p class="schedule-name">專題討論</p>
+                <p class="schedule-detail">圖書館三樓討論室</p>
+              </div>
+              <span class="schedule-tag">學習</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="panel" aria-labelledby="tasks-heading">
+          <div class="panel-head">
+            <h2 class="panel-title" id="tasks-heading">待辦事項 <span class="count">3</span></h2>
+            <span class="panel-caption">完成一項，就勾選一下</span>
+          </div>
+          <ul class="task-list">
+            <li class="task-item">
+              <input class="task-check" type="checkbox" id="task-1" aria-label="Mark task complete">
+              <label class="task-name" for="task-1">標記繳交網頁設計作業</label>
+              <span class="task-status status-todo">尚未開始</span>
+            </li>
+            <li class="task-item">
+              <input class="task-check" type="checkbox" id="task-2" checked aria-label="Mark task complete">
+              <label class="task-name" for="task-2">整理訪談紀錄</label>
+              <span class="task-status status-done">已完成</span>
+            </li>
+            <li class="task-item">
+              <input class="task-check" type="checkbox" id="task-3" aria-label="Mark task complete">
+              <label class="task-name" for="task-3">閱讀課程指定文章</label>
+              <span class="task-status status-progress">進行中</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="panel form-panel" aria-labelledby="form-heading">
+        <div class="panel-head">
+          <h2 class="panel-title" id="form-heading">新增行程</h2>
+          <span class="panel-caption">幫今天留一個位置</span>
+        </div>
+        <form class="form-body" id="schedule-form">
+          <div class="field">
+            <label for="event-title">行程名稱</label>
+            <input id="event-title" name="title" type="text" placeholder="例如：和朋友喝咖啡" maxlength="50" required>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="event-time">開始時間</label>
+              <input id="event-time" name="time" type="time" value="16:00" required>
+            </div>
+            <div class="field">
+              <label for="event-category">行程類別</label>
+              <input id="event-category" name="category" type="text" placeholder="例如：生活" maxlength="10" value="生活" required>
+            </div>
+          </div>
+          <div class="field">
+            <label for="event-detail">備註／地點（選填）</label>
+            <textarea id="event-detail" name="detail" placeholder="補充地點或行程細節"></textarea>
+          </div>
+          <button class="submit-button" type="submit">＋ 新增至今日行程</button>
+        </form>
+      </section>
+    </div>
+
+    <footer class="footer">慢慢來，也是在前進。 · 資料僅保存在目前頁面</footer>
+  </main>
+
+  <script>
+    (() => {
+      const now = new Date();
+      const dateElement = document.getElementById("top-date");
+      dateElement.textContent = new Intl.DateTimeFormat("zh-TW", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long"
+      }).format(now);
+
+      const scheduleList = document.getElementById("schedule-list");
+      const scheduleCount = document.getElementById("schedule-count");
+
+      document.querySelectorAll(".task-item").forEach((item) => {
+        const checkbox = item.querySelector(".task-check");
+        const status = item.querySelector(".task-status");
+        const initialStatus = status.textContent;
+
+        const updateStatus = () => {
+          const isDone = checkbox.checked;
+          item.classList.toggle("is-done", isDone);
+          status.textContent = isDone
+            ? "已完成"
+            : (initialStatus === "已完成" ? "已完成" : initialStatus);
+          status.className = "task-status " + (isDone
+            ? "status-done"
+            : (initialStatus === "尚未開始" ? "status-todo" : "status-progress"));
+        };
+
+        checkbox.addEventListener("change", updateStatus);
+        updateStatus();
+      });
+
+      document.getElementById("schedule-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const formData = new FormData(form);
+        const time = String(formData.get("time"));
+        const title = String(formData.get("title")).trim();
+        const category = String(formData.get("category")).trim();
+        const detail = String(formData.get("detail")).trim();
+
+        if (!title || !category || !time) return;
+
+        const item = document.createElement("li");
+        item.className = "schedule-item";
+        item.dataset.time = time;
+
+        const timeElement = document.createElement("time");
+        timeElement.className = "schedule-time";
+        timeElement.textContent = time;
+
+        const content = document.createElement("div");
+        const name = document.createElement("p");
+        name.className = "schedule-name";
+        name.textContent = title;
+
+        const description = document.createElement("p");
+        description.className = "schedule-detail";
+        description.textContent = detail || "今日新增行程";
+        content.append(name, description);
+
+        const tag = document.createElement("span");
+        tag.className = "schedule-tag";
+        tag.textContent = category;
+        item.append(timeElement, content, tag);
+        scheduleList.append(item);
+
+        Array.from(scheduleList.children)
+          .sort((first, second) => first.dataset.time.localeCompare(second.dataset.time))
+          .forEach((scheduleItem) => scheduleList.append(scheduleItem));
+
+        scheduleCount.textContent = String(scheduleList.children.length);
+        form.reset();
+        document.getElementById("event-time").value = "16:00";
+        document.getElementById("event-category").value = "生活";
+        document.getElementById("event-title").focus();
+      });
+    })();
+  </script>
+</body>
+</html>
