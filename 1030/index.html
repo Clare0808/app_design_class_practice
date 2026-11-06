@@ -7,19 +7,21 @@
 <title>日序 Daymark｜個人行程與任務</title>
 <style>
   :root{--paper:#f7f6f3;--surface:#fff;--ink:#202521;--muted:#858b85;--line:#eaece7;--green:#548265;--green-bg:#e8f1e9;--orange:#d28846;--orange-bg:#fbf0e4;--red:#d45f5a;--red-bg:#fae9e7;--shadow:0 14px 38px rgba(32,37,33,.055)}
-  *{box-sizing:border-box} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;min-height:100vh} button,input{font:inherit} button{cursor:pointer}
+  *{box-sizing:border-box} body.auth-pending .app{visibility:hidden} body:not(.authenticated) .app{display:none} body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;min-height:100vh} button,input{font:inherit} button{cursor:pointer}
   .app{max-width:1440px;margin:0 auto;padding:30px 42px 40px}.topbar{height:58px;display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}.brand{display:flex;gap:12px;align-items:center}.brand-mark{width:39px;height:39px;border-radius:13px;background:#315d48;color:white;display:grid;place-items:center;font-size:19px;font-weight:700}.brand-name{font-weight:750;font-size:18px;letter-spacing:.02em}.brand-sub{font-size:11px;color:var(--muted);margin-top:3px;letter-spacing:.1em}.top-actions{display:flex;align-items:center;gap:15px}.today-link{font-size:13px;font-weight:600;border:0;background:transparent;color:#626b64;padding:9px 12px;border-radius:9px}.today-link:hover{background:#eeefeb}.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#eee4d8;color:#765f46;font-size:13px;font-weight:700}
+  .auth-screen{min-height:100vh;display:grid;place-items:center;padding:24px}.auth-card{width:min(420px,100%);background:var(--surface);border:1px solid #eeefeb;border-radius:20px;padding:34px;box-shadow:var(--shadow);text-align:center}.auth-brand{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:25px}.auth-brand .brand-mark{width:42px;height:42px}.auth-card h1{font-size:23px;margin:0 0 8px}.auth-card p{font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 22px}.auth-providers{display:grid;gap:10px}.line-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:0;background:#06c755;border-radius:10px;padding:12px 16px;color:#fff;font-size:13px;font-weight:650}.line-btn:hover{background:#05b64d}.line-btn:disabled{opacity:.6;cursor:wait}.line-mark{width:20px;height:16px;display:grid;place-items:center;background:#fff;color:#06c755;border-radius:8px;font-size:10px;font-weight:800}.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #dfe3de;background:white;border-radius:10px;padding:12px 16px;color:#343a36;font-size:13px;font-weight:650}.google-btn:hover{background:#f8f9f7}.google-mark{font-weight:800;font-size:16px;color:#4285f4}.auth-status{font-size:12px;color:var(--muted);min-height:18px;margin-top:14px}.auth-error{color:var(--red)}.account-chip{display:flex;align-items:center;gap:9px}.account-email{font-size:11px;color:#626b64;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.logout-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:11px;color:#626b64}.logout-btn:hover{background:#f5f6f2}body.auth-pending .auth-screen{display:none}body.authenticated .auth-screen{display:none}
   .greeting{margin:0 0 27px}.eyebrow{font-size:11px;letter-spacing:.14em;color:var(--green);font-weight:700;text-transform:uppercase}.greeting h1{font-size:30px;letter-spacing:-.04em;margin:7px 0 5px;font-weight:650}.greeting p{font-size:13px;color:var(--muted);margin:0}.layout{display:grid;grid-template-columns:minmax(520px,1.13fr) minmax(380px,.87fr);gap:22px;align-items:start}.panel{background:var(--surface);border:1px solid #eeefeb;border-radius:18px;box-shadow:var(--shadow)}.calendar-panel{padding:26px 28px 24px}.month-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.month-title{display:flex;align-items:baseline;gap:9px}.month-title h2{font-size:22px;letter-spacing:-.04em;margin:0;font-weight:680}.month-title span{font-size:13px;color:var(--muted)}.month-nav{display:flex;gap:7px}.icon-btn{border:1px solid var(--line);background:white;width:34px;height:34px;border-radius:10px;color:#666e68;font-size:17px;display:grid;place-items:center}.icon-btn:hover{background:#f5f6f2}.weekdays,.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));text-align:center}.weekdays{margin-bottom:9px}.weekdays div{font-size:11px;color:#9a9e99;font-weight:600;padding:7px 0}.weekdays div:first-child{color:#d28a7d}.calendar-grid{row-gap:5px}.day{position:relative;min-height:82px;border:0;background:transparent;border-radius:12px;color:var(--ink);padding:8px 5px 5px;display:flex;align-items:center;flex-direction:column;gap:5px;transition:background .15s}.day:hover{background:#f5f6f2}.day.outside{color:#c5c9c4}.day.selected{background:#edf3ed}.day.today .day-num{background:#315d48;color:#fff}.day-num{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:550}.day.outside .day-num{font-weight:400}.day-dots{height:7px;display:flex;gap:3px;justify-content:center}.dot{width:5px;height:5px;border-radius:50%;display:block}.dot.green{background:var(--green)}.dot.orange{background:var(--orange)}.dot.red{background:var(--red)}.day-count{font-size:9px;color:#858b85;line-height:1}.legend{border-top:1px solid var(--line);padding-top:17px;margin-top:16px;display:flex;gap:17px;flex-wrap:wrap}.legend-item{font-size:11px;color:#858b85;display:flex;align-items:center;gap:6px}.legend-swatch{width:7px;height:7px;border-radius:50%}.right-col{display:flex;flex-direction:column;gap:16px}.summary{background:#315d48;border-radius:18px;color:#fff;padding:22px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 12px 30px rgba(49,93,72,.15)}.summary-copy .small{font-size:11px;opacity:.72;letter-spacing:.09em}.summary-copy h2{font-size:22px;margin:5px 0 0;letter-spacing:-.03em}.summary-count{text-align:right}.summary-count strong{font-size:33px;font-weight:600;line-height:1}.summary-count span{font-size:11px;opacity:.75;margin-left:5px}.tasks-panel{padding:23px 23px 19px;min-height:280px}.tasks-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:15px}.tasks-head h2{font-size:17px;margin:0;font-weight:700;letter-spacing:-.02em}.tasks-head p{font-size:11px;color:var(--muted);margin:5px 0 0}.add-btn{background:#315d48;color:#fff;border:0;border-radius:10px;padding:9px 12px;font-size:11px;font-weight:650;display:flex;gap:6px;align-items:center}.add-btn:hover{background:#244a38}.task-list{display:flex;flex-direction:column}.task-row{display:flex;gap:11px;align-items:center;padding:13px 0;border-bottom:1px solid #f0f1ee}.task-row:last-child{border:0}.check{width:18px;height:18px;border-radius:6px;border:1.5px solid #d4d9d3;background:#fff;flex:none;display:grid;place-items:center;color:white;font-size:12px;padding:0}.check:hover{border-color:var(--green)}.task-row.done .check{background:var(--green);border-color:var(--green)}.task-row.done .task-name{text-decoration:line-through;color:#a0a59f}.task-content{min-width:0;flex:1}.task-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.task-meta{display:flex;gap:8px;align-items:center;margin-top:5px}.task-time{font-size:10px;color:#929892}.badge{font-size:9px;padding:3px 7px;border-radius:20px;font-weight:650}.badge.red{color:var(--red);background:var(--red-bg)}.badge.orange{color:var(--orange);background:var(--orange-bg)}.badge.green{color:var(--green);background:var(--green-bg)}.delete-btn{border:0;background:transparent;color:#bdc1bc;font-size:17px;padding:5px}.delete-btn:hover{color:var(--red)}.edit-btn{border:0;background:transparent;color:#8a938b;font-size:11px;font-weight:600;padding:6px 7px;border-radius:6px}.edit-btn:hover{background:#edf3ed;color:var(--green)}.empty{padding:34px 10px;text-align:center;color:#929892;font-size:12px;line-height:1.8}.empty-icon{font-size:23px;margin-bottom:5px}.upcoming-panel{padding:19px 22px}.upcoming-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.upcoming-head h3{margin:0;font-size:13px}.upcoming-head span{font-size:10px;color:var(--muted)}.upcoming-item{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #f0f1ee}.upcoming-item:last-child{border:0;padding-bottom:0}.upcoming-date{width:32px;height:32px;border-radius:9px;background:#f4f5f1;display:grid;place-items:center;font-size:10px;color:#737a74;line-height:1.1;text-align:center}.upcoming-title{font-size:11px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.upcoming-time{font-size:10px;color:var(--muted)}.footer-note{font-size:10px;color:#a1a59f;text-align:center;margin-top:16px}
   .projects-panel{margin:0 0 22px;padding:23px 23px 20px}.project-tabs{display:flex;align-items:flex-end;gap:6px;overflow-x:auto;padding:3px 0 0;margin:0 0 16px;border-bottom:1px solid var(--line);scrollbar-width:thin}.project-tab{position:relative;flex:0 0 auto;max-width:220px;padding:9px 14px 11px;border:0;border-radius:10px 10px 0 0;background:transparent;color:#737a74;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.project-tab:hover{background:#f5f6f2;color:var(--ink)}.project-tab.active{background:#edf3ed;color:#315d48}.project-tab.active:after{content:"";position:absolute;bottom:0;left:12px;right:12px;height:2px;background:#548265;border-radius:2px}.project-tab:focus-visible{outline:2px solid #81a08b;outline-offset:-2px}.project-list{display:flex;flex-direction:column;gap:14px}.project-card{border:1px solid #edf0eb;border-radius:13px;padding:15px}.project-top{display:flex;align-items:flex-start;gap:10px}.project-title{font-size:13px;font-weight:700;flex:1;overflow-wrap:anywhere}.project-dates{font-size:10px;color:var(--muted);margin-top:5px}.project-percent{font-size:14px;font-weight:700;white-space:nowrap}.project-gantt{height:12px;background:#f0f1ee;border-radius:99px;overflow:hidden;margin:13px 0 8px}.project-gantt-fill{height:100%;border-radius:inherit;transition:width .2s ease}.project-gantt-fill.red{background:var(--red)}.project-gantt-fill.orange{background:var(--orange)}.project-gantt-fill.green{background:var(--green)}.project-progress-meta{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:#858b85}.project-actions{display:flex;align-items:center;gap:8px;margin-top:12px}.project-range{flex:1;accent-color:var(--green);min-width:80px}.progress-value{font-size:11px;font-weight:700;min-width:36px;text-align:right}.project-empty{padding:24px 10px;text-align:center;color:#929892;font-size:12px;line-height:1.8}.project-delete{border:0;background:transparent;color:#bdc1bc;padding:5px}.project-delete:hover{color:var(--red)}.project-modal .field input[type=range]{padding:0;accent-color:var(--green)}  .modal-backdrop{position:fixed;inset:0;background:rgba(25,32,27,.34);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal-backdrop.open{display:flex}.modal{width:min(420px,100%);background:#fff;border-radius:18px;padding:24px;box-shadow:0 24px 80px rgba(0,0,0,.18)}.modal h2{margin:0;font-size:19px}.modal p{font-size:12px;color:var(--muted);margin:6px 0 19px}.field{display:flex;flex-direction:column;gap:7px;margin:13px 0}.field label{font-size:11px;font-weight:650;color:#616862}.field input{border:1px solid var(--line);border-radius:9px;padding:11px 12px;font-size:13px;outline:none;color:var(--ink)}.field input:focus{border-color:#81a08b;box-shadow:0 0 0 3px #eaf1eb}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:19px}.modal-actions button{padding:10px 15px;border-radius:9px;font-size:12px;font-weight:650}.cancel-btn{border:1px solid var(--line);background:#fff;color:#6e756f}.save-btn{border:0;background:#315d48;color:#fff}.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,15px);padding:10px 15px;border-radius:9px;background:#28372e;color:white;font-size:12px;opacity:0;pointer-events:none;transition:.2s;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}
   @media(max-width:900px){.app{padding:22px 20px 32px}.layout{grid-template-columns:1fr}.calendar-panel{padding:22px}.right-col{display:grid;grid-template-columns:1fr 1fr;align-items:start}.summary{grid-column:1/-1}.tasks-panel{grid-row:2}.upcoming-panel{grid-row:2}}
   @media(max-width:620px){.app{padding:17px 13px 25px}.topbar{margin-bottom:20px}.greeting h1{font-size:25px}.layout{gap:13px}.calendar-panel{padding:17px 12px}.month-title h2{font-size:19px}.day{min-height:66px;gap:3px;padding-top:6px}.day-num{width:27px;height:27px;font-size:12px}.weekdays div{font-size:10px}.calendar-grid{row-gap:2px}.right-col{display:flex}.tasks-panel{padding:19px 17px}.summary{padding:19px}.legend{gap:11px}.legend-item{font-size:10px}}
 </style>
 </head>
-<body>
+<body class="auth-pending">
+<div class="auth-screen" id="authScreen"><section class="auth-card" aria-labelledby="authTitle"><div class="auth-brand"><div class="brand-mark">日</div><strong>日序 Daymark</strong></div><h1 id="authTitle">登入以繼續</h1><p>請使用 Google 帳戶登入，進入你的個人行程與長期進度。</p><div class="auth-providers"><button type="button" class="google-btn" id="googleSignInBtn"><span class="google-mark" aria-hidden="true">G</span>使用 Google 帳戶登入</button><button type="button" class="line-btn" id="lineSignInBtn"><span class="line-mark" aria-hidden="true">LINE</span>使用 LINE 登入</button></div><div class="auth-status" id="authStatus" role="status" aria-live="polite">正在初始化登入服務…</div></section></div>
 <div class="app">
   <header class="topbar">
     <div class="brand"><div class="brand-mark">日</div><div><div class="brand-name">日序 <span style="font-weight:450;color:#8b918b">Daymark</span></div><div class="brand-sub">MAKE ROOM FOR WHAT MATTERS</div></div></div>
-    <div class="top-actions"><button class="today-link" id="todayBtn">回到今天</button><div class="avatar" title="個人工作區">我</div></div>
+    <div class="top-actions"><button class="today-link" id="todayBtn">回到今天</button><div class="account-chip"><span class="account-email" id="accountEmail"></span><button type="button" class="logout-btn" id="logoutBtn">登出</button></div></div>
   </header>
   <section class="greeting"><div class="eyebrow" id="greetingDate">PERSONAL PLANNER</div><h1 id="greetingTitle">把重要的事，安排進生活。</h1><p id="greetingSub">清楚看見接下來的每一步。</p></section>
 <section class="panel projects-panel" aria-labelledby="projectsHeading"><div class="tasks-head"><div><h2 id="projectsHeading">長期進度追蹤</h2><p>每日更新進度，掌握專案步調</p></div><button class="add-btn" id="addProjectBtn"><span style="font-size:16px;line-height:12px">＋</span> 新增專案</button></div><div id="projectTabs" class="project-tabs" role="tablist" aria-label="選擇長期專案"></div><div id="projectList" class="project-list"></div></section>
@@ -120,6 +122,99 @@ $('addProjectBtn').addEventListener('click',openProjectModal);
   $('taskForm').addEventListener('submit',e=>{e.preventDefault();const name=$('taskName').value.trim(),date=$('taskDate').value,time=$('taskTime').value;if(!name||!date||!time)return;const wasEditing=Boolean(editingTaskId);if(wasEditing){const task=tasks.find(t=>t.id===editingTaskId);if(task)Object.assign(task,{name,date,time})}else{tasks.push({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),name,date,time,done:false})}save();selected=parseKey(date);viewMonth=new Date(selected.getFullYear(),selected.getMonth(),1);render();closeModal();$('taskForm').reset();showToast(wasEditing?'待辦已更新':'待辦已新增')});
   render();
 })();
+</script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  // Firebase Console > Project settings > Your apps > Web app: replace with this project's config.
+  const firebaseConfig = {
+    apiKey: "AIzaSyAgdHKEKRO5jiBy3g_hJKTVZaM9QEyV2yQ",
+    authDomain: "event-magagement.firebaseapp.com",
+    projectId: "event-magagement",
+    appId: "1:42232508255:web:61935c524a30a5ffc790ea",
+  };
+  const screen = document.getElementById("authScreen");
+  const status = document.getElementById("authStatus");
+  const loginButton = document.getElementById("googleSignInBtn");
+  const lineLoginButton = document.getElementById("lineSignInBtn");
+  const setStatus = (message, isError = false) => { status.textContent = message; status.classList.toggle("auth-error", isError); };
+  const configReady = Object.values(firebaseConfig).every(value => value && !value.startsWith("YOUR_"));
+  if (!configReady) {
+    document.body.classList.remove("auth-pending");
+    setStatus("尚未設定 Firebase。請先填入 Firebase Web App 設定，登入後才能使用。", true);
+    loginButton.disabled = true;
+    lineLoginButton.disabled = true;
+  } else {
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const lineConfig = {
+        channelId: "2012416679",
+        redirectUri: `${location.origin}${location.pathname}`
+      };
+      getRedirectResult(auth).catch(error => { setStatus(authErrorMessage(error), true); });
+      onAuthStateChanged(auth, user => {
+        document.body.classList.remove("auth-pending");
+        document.body.classList.toggle("authenticated", Boolean(user));
+        document.getElementById("accountEmail").textContent = user?.email || "";
+        setStatus(user ? "已登入" : "請使用 Google 帳戶登入。");
+      }, error => {
+        document.body.classList.remove("auth-pending");
+        document.body.classList.remove("authenticated");
+        setStatus(authErrorMessage(error), true);
+      });
+      lineLoginButton.addEventListener("click", () => {
+        if (!lineConfig.channelId || lineConfig.channelId.startsWith("YOUR_")) {
+          setStatus("尚未設定 LINE Login Channel ID，請填入 LINE Developers 的 Channel ID。", true);
+          return;
+        }
+        const state = randomBase64Url(32);
+        const nonce = randomBase64Url(32);
+        sessionStorage.setItem("daymark-line-oauth-state", state);
+        sessionStorage.setItem("daymark-line-oauth-nonce", nonce);
+        const params = new URLSearchParams({
+          response_type: "code",
+          client_id: lineConfig.channelId,
+          redirect_uri: lineConfig.redirectUri,
+          state,
+          scope: "openid profile",
+          nonce
+        });
+        location.assign(`https://access.line.me/oauth2/v2.1/authorize?${params.toString()}`);
+      });
+      loginButton.addEventListener("click", async () => {
+        loginButton.disabled = true;setStatus("正在連線 Google…");
+        try { if (isMobile) await signInWithRedirect(auth, provider); else await signInWithPopup(auth, provider); }
+        catch (error) { setStatus(authErrorMessage(error), true);loginButton.disabled = false; }
+      });
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        try { await signOut(auth); } catch (error) { setStatus(authErrorMessage(error), true); }
+      });
+    } catch (error) {
+      document.body.classList.remove("auth-pending");
+      setStatus(authErrorMessage(error), true);
+      loginButton.disabled = true;
+    }
+  }
+  function randomBase64Url(byteCount) {
+    const bytes = crypto.getRandomValues(new Uint8Array(byteCount));
+    let binary = "";
+    bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+    return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+  }
+  function authErrorMessage(error) {
+    switch (error?.code) {
+      case "auth/unauthorized-domain": return "此網域尚未加入 Firebase 授權網域，請到 Firebase Authentication 設定新增。";
+      case "auth/popup-closed-by-user": return "登入視窗已關閉，請重新登入。";
+      case "auth/popup-blocked": return "瀏覽器封鎖了登入視窗，請允許彈出視窗後重試。";
+      case "auth/network-request-failed": return "網路連線失敗，請檢查網路後重試。";
+      default: return `登入服務發生問題：${error?.message || "未知錯誤"}`;
+    }
+  }
 </script>
 </body>
 </html>
