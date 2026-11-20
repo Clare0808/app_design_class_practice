@@ -2,9 +2,9 @@
 
 Google 登入直接使用 Firebase Web SDK。LINE 登入必須透過 `server.js` 將 LINE 授權碼換成經驗證的 LINE 身分，並由 Firebase Admin SDK 核發 Custom Token；只有 Firebase 驗證成功後才會顯示主功能。
 
-## AI 行程建議（Firebase AI Logic）
+## AI 行程助手（Firebase AI Logic）
 
-登入後，使用者可按「產生建議」；只有點擊後才會將**最多 20 筆未完成待辦的名稱、截止日期和時間**送至 Firebase AI Logic 的 Gemini Developer API（模型 `gemini-3.5-flash-lite`）。回覆僅顯示在頁面上，不會寫入 Firestore、修改行程或傳送帳號 email。每次點擊會產生一次模型請求，可能收費；請勿在待辦名稱輸入不希望送給 Gemini 的敏感資訊。
+登入後可開啟右下角的 AI 行程助手，在聊天介面輸入問題（最多 500 字），按送出或使用 Enter 送出（Shift + Enter 換行）；對話會在目前頁面保留，最近最多三輪成功的問答會連同新問題送至 Firebase AI Logic 的 Gemini Developer API（模型 `gemini-3.5-flash-lite`），以便接續討論。**不會自動傳送待辦清單、專案或帳號 email**；若想討論行程，請自行在訊息中提供所需資訊。對話只存於目前頁面的記憶體，不寫入 Firestore、不會自動修改行程；切換帳號或重新整理會清除對話。每次送出都可能產生費用；請勿輸入不希望送給 Gemini 的敏感資訊。
 
 正式使用前，請到 Firebase Console → **AI Logic**，為 `event-magagement` 專案啟用 **Gemini Developer API**，依介面完成所需 API 和 **Blaze／帳單連結**設定；在 Google Cloud 設定預算提醒及 Gemini API 支出上限。強烈建議先為 Web App 設定並啟用 **Firebase App Check**（例如 reCAPTCHA Enterprise），在測試驗證成功後於 Firebase AI Logic 啟用強制執行以防止未授權請求造成費用。現有專案尚未包含 App Check 網站金鑰，**尚未自動啟用強制執行**；上線前請完成此步驟。Web Firebase 設定中的 `apiKey` 不是服務帳戶私鑰，也不需把 Gemini API key 放入網頁或 `.env`。若模型無法使用，請至 Firebase AI Logic 的支援模型文件檢查當下可用的模型名稱與地區。此功能不是 Firebase Console 的「Gemini in Firebase」開發輔助聊天功能。參考：https://firebase.google.com/docs/ai-logic/get-started?platform=web 、https://firebase.google.com/docs/ai-logic/pricing 。
 

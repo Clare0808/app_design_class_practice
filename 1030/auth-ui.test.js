@@ -16,7 +16,7 @@ function setup(hostname) {
       if (!elements.has(id)) elements.set(id, {
         disabled: false, title: "", textContent: "",
         classList: { toggle() {}, add() {}, remove() {} },
-        setAttribute() {},
+        setAttribute() {}, replaceChildren() {},
         addEventListener(type, listener) { this.listeners ??= {}; this.listeners[type] = listener; }
       });
       return elements.get(id);
