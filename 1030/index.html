@@ -348,6 +348,11 @@ $('addProjectBtn').addEventListener('click',openProjectModal);
       provider.setCustomParameters({ prompt: "select_account" });
       const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
       const lineConfig = { channelId: "2012416679", redirectUri: `${location.origin}${location.pathname}` };
+      const onGitHubPages = location.hostname?.toLowerCase().endsWith(".github.io");
+      if (onGitHubPages) {
+        lineLoginButton.disabled = true;
+        lineLoginButton.title = "GitHub Pages 無法執行 LINE 登入後端；請使用 Google 登入。";
+      }
       const lineResult = new URLSearchParams(location.search);
       const lineReturning = lineResult.has("code") || lineResult.has("error");
       let lineSigningIn = lineReturning;
@@ -365,6 +370,7 @@ $('addProjectBtn').addEventListener('click',openProjectModal);
       onAuthStateChanged(auth, user => {
         if (lineSigningIn || lineSignInFailed) {session++;dataView.clear();resetAI();return;}
         void openUser(user);
+        if (!user && onGitHubPages) setStatus("GitHub Pages 不支援 LINE 登入；請使用 Google 帳戶登入。");
       }, error => {
         document.body.classList.remove("auth-pending");
         document.body.classList.remove("authenticated");
@@ -397,11 +403,15 @@ $('addProjectBtn').addEventListener('click',openProjectModal);
           } finally {
             lineSigningIn = false;
             loginButton.disabled = false;
-            lineLoginButton.disabled = false;
+            lineLoginButton.disabled = onGitHubPages;
           }
         })();
       }
       lineLoginButton.addEventListener("click", async () => {
+        if (onGitHubPages) {
+          setStatus("GitHub Pages 無法執行 LINE 登入後端；請使用 Google 帳戶登入。", true);
+          return;
+        }
         if (!lineConfig.channelId || lineConfig.channelId.startsWith("YOUR_")) {
           setStatus("尚未設定 LINE Login Channel ID，請填入 LINE Developers 的 Channel ID。", true);
           return;
