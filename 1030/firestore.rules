@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['displayName', 'email', 'provider', 'lastLoginAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.email is string
+        && request.resource.data.provider is string
+        && request.resource.data.lastLoginAt is timestamp;
+      allow delete: if false;
+      match /data/{kind} {
+        allow read: if request.auth != null && request.auth.uid == uid && kind in ['tasks', 'projects'];
+        allow create, update: if request.auth != null && request.auth.uid == uid
+          && kind in ['tasks', 'projects']
+          && request.resource.data.keys().hasOnly(['items', 'updatedAt'])
+          && request.resource.data.items is list
+          && request.resource.data.items.size() <= 500
+          && request.resource.data.updatedAt is timestamp;
+        allow delete: if false;
+      }
+    }
+  }
+}
